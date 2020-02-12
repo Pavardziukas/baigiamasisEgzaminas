@@ -30,8 +30,28 @@ if (!App::$session->userLoggedIn()) {
     <section class="wrapper2">
 
     </section>
-    <div class="container">
-
+    <div class="container-mid">
+        <div class="offers-container">
+            <img class="img" src="babyseat.png" alt="baby seat">
+            <div >
+                <h3 class="description">Baby seats</h3>
+                <p class="txt">We offer a taxi service with the child seat 24 hours. Homologated seats, comfortable and above all safe, making journeys are as pleasant as possible.</p>
+            </div>
+        </div>
+        <div class="offers-container">
+            <img class="img" src="airport.jpg" alt="airport pick up">
+            <div >
+                <h3 class="description">Airport pick up</h3>
+                <p class="txt">Whether you’re travelling for business or leisure, you can count on us for a comfortable and safe ride to and from airport.</p>
+            </div>
+        </div>
+        <div class="offers-container">
+            <img class="img" src="vip.jpg" alt="vip cars">
+            <div >
+                <h3 class="description">VIP car service</h3>
+                <p class="txt">Our luxury cars will transport you in comfort and style to meetings, parties and events as well as your airport transfers. Our drivers can recommend the best restaurants and tourist attractions to make your visit more enjoyable.</p>
+            </div>
+        </div>
     </div>
 
 
