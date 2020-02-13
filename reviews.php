@@ -27,19 +27,16 @@ $footer = new \App\Views\Footer();
 
 <main>
     <section class="wrapper">
-        <div class="block">
-            <h1>Feedbacks:</h1>
-            <?php print $createForm->render(); ?>
-        </div>
+        <h1>Feedbacks:</h1>
         <div class="block">
             <div id="feedbacks-table">
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Vardas</th>
                         <th>Komentaras</th>
                         <th>Data</th>
-                        <th>Vardas</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -47,6 +44,10 @@ $footer = new \App\Views\Footer();
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="block">
+
+            <?php print $createForm->render(); ?>
         </div>
     </section>
 
