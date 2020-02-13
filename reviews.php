@@ -27,14 +27,25 @@ $footer = new \App\Views\Footer();
 
 <main>
     <section class="wrapper">
-        <?php if (App::$session->userLoggedIn()): ?>
-            <div class="block" id="review-form">
-                <h1>Reviews</h1>
-                <?php print $createForm->render(); ?>
-            </div>
-        <?php endif; ?>
-        <div class="review-block">
-            <div id="person-table">
+        <div class="block">
+            <h1>Feedbacks:</h1>
+            <?php print $createForm->render(); ?>
+        </div>
+        <div class="block">
+            <div id="feedbacks-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Komentaras</th>
+                        <th>Data</th>
+                        <th>Vardas</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Rows Are Dynamically Populated -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
