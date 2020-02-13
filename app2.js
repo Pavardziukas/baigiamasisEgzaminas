@@ -1,10 +1,11 @@
+
 'use strict';
 
 const endpoints = {
-    get: 'api/reviews/get.php',
-    create: 'api/reviews/create.php',
-    // update: 'api/reviews/update.php',
-    // delete: 'api/reviews/delete.php'
+    get: 'api/participants/get.php',
+    create: 'api/participants/create.php',
+    // update: 'api/feedback/update.php',
+    // delete: 'api/feedback/delete.php'
 };
 
 /**
@@ -21,7 +22,6 @@ function api(url, formData, success, fail) {
         body: formData
     }).then(response => response.json())
         .then(obj => {
-            console.log(obj);
             if (obj.status === 'success') {
                 success(obj.data);
             } else {
@@ -31,7 +31,7 @@ function api(url, formData, success, fail) {
         .catch(e => {
             console.log(e);
             fail(['Could not connect to API!']);
-        })
+        });
 }
 
 /**
@@ -50,6 +50,7 @@ const forms = {
             if (this.getElement()) {
                 this.getElement().addEventListener('submit', this.onSubmitListener);
             }
+
         },
         getElement: function () {
             return document.getElementById("create-form");
@@ -62,7 +63,7 @@ const forms = {
         success: function (data) {
             const element = forms.create.getElement();
 
-            table.row.append(data);
+            card.row.append(data);
             forms.ui.errors.hide(element);
             forms.ui.clear(element);
             forms.ui.flash.class(element, 'success');
@@ -74,51 +75,51 @@ const forms = {
     /**
      * Update Form
      */
-    // update: {
-    //     init: function () {
-    //         console.log('Initializing update form...');
-    //         this.elements.form().addEventListener('submit', this.onSubmitListener);
-    //
-    //         const closeBtn = forms.update.elements.modal().querySelector('.close');
-    //         closeBtn.addEventListener('click', forms.update.onCloseListener);
-    //
-    //     },
-    //     elements: {
-    //         form: function () {
-    //             return document.getElementById("update-form");
-    //         },
-    //         modal: function () {
-    //             return document.getElementById("update-modal");
-    //         }
-    //     },
-    //     onSubmitListener: function (e) {
-    //         e.preventDefault();
-    //         let formData = new FormData(e.target);
-    //         let id = forms.update.elements.form().getAttribute('data-id');
-    //         formData.append('id', id);
-    //
-    //         api(endpoints.update, formData, forms.update.success, forms.update.fail);
-    //     },
-    //     success: function (data) {
-    //         table.row.update(data);
-    //         forms.update.hide();
-    //     },
-    //     fail: function (errors) {
-    //         forms.ui.errors.show(this.elements.form(), errors);
-    //     },
-    //     fill: function (data) {
-    //         forms.ui.fill(forms.update.elements.form(), data);
-    //     },
-    //     onCloseListener: function (e) {
-    //         forms.update.hide();
-    //     },
-    //     show: function () {
-    //         this.elements.modal().style.display = 'block';
-    //     },
-    //     hide: function () {
-    //         this.elements.modal().style.display = 'none';
-    //     }
-    // },
+    update: {
+        init: function () {
+            console.log('Initializing update form...');
+            this.elements.form().addEventListener('submit', this.onSubmitListener);
+
+            const closeBtn = forms.update.elements.modal().querySelector('.close');
+            closeBtn.addEventListener('click', forms.update.onCloseListener);
+
+        },
+        elements: {
+            form: function () {
+                return document.getElementById("update-form");
+            },
+            modal: function () {
+                return document.getElementById("update-modal");
+            }
+        },
+        onSubmitListener: function (e) {
+            e.preventDefault();
+            let formData = new FormData(e.target);
+            let id = forms.update.elements.form().getAttribute('data-id');
+            formData.append('id', id);
+
+            api(endpoints.update, formData, forms.update.success, forms.update.fail);
+        },
+        success: function (data) {
+            card.row.update(data);
+            forms.update.hide();
+        },
+        fail: function (errors) {
+            forms.ui.errors.show(this.elements.form(), errors);
+        },
+        fill: function (data) {
+            forms.ui.fill(forms.update.elements.form(), data);
+        },
+        onCloseListener: function (e) {
+            forms.update.hide();
+        },
+        show: function () {
+            this.elements.modal().style.display = 'block';
+        },
+        hide: function () {
+            this.elements.modal().style.display = 'none';
+        }
+    },
     /**
      * Common/Universal Form UI Functions
      */
@@ -203,11 +204,11 @@ const forms = {
 };
 
 /**
- * Table-related functionality
+ * card-related functionality
  */
 const table = {
     getElement: function () {
-        return document.querySelector('#feedbacks-table tbody');
+        return document.querySelector('#reviews-table tbody');
     },
     init: function () {
         this.data.load();
@@ -252,26 +253,16 @@ const table = {
 
             Object.keys(data).forEach(data_id => {
                 let td = document.createElement('td');
+                td.className = data_id;
                 td.innerHTML = data[data_id];
-                row.append(td);
-            });
 
-            let buttons = {
-                // delete: '🚮',
-                // edit: '✏️'
-            };
-
-            Object.keys(buttons).forEach(button_id => {
-                let btn = document.createElement('td');
-                btn.innerHTML = buttons[button_id];
-                btn.className = button_id;
-                row.append(btn);
+                if (data_id !== 'id' && data_id !== 'user_id') {
+                    row.append(td);
+                }
             });
 
             return row;
         },
-
-
         /**
          * Appends row to table from data
          *
@@ -287,7 +278,7 @@ const table = {
          * @param {Object} data
          */
         update: function (data) {
-            let row = table.getElement().querySelector('div[data-id="' + data.id + '"]');
+            let row = table.getElement().querySelector('tr[data-id="' + data.id + '"]');
             row.replaceWith(this.build(data));
             //row = this.build(data);
         },
@@ -296,65 +287,11 @@ const table = {
          * @param {Integer} id
          */
         delete: function (id) {
-            const card = table.getElement().querySelector('div[data-id="' + id + '"]');
-            card.remove();
-        }
-    },
-    buttons: {
-        delete: {
-            init: function () {
-                table.getElement().addEventListener('click', this.onClickListener);
-            },
-            getElements: function () {
-                return document.querySelectorAll('.delete-btn');
-            },
-            onClickListener: function (e) {
-                if (e.target.className === 'delete') {
-                    let formData = new FormData();
-
-                    let card = e.target.closest('div.card-container');
-                    console.log(card);
-                    formData.append('id', card.getAttribute('data-id'));
-                    api(endpoints.delete, formData, table.buttons.delete.success, table.buttons.delete.fail);
-                }
-            },
-            success: function (data) {
-                console.log(data);
-                table.row.delete(data.id);
-            },
-            fail: function (errors) {
-                alert(errors[0]);
-            }
-        },
-        edit: {
-            init: function () {
-                table.getElement().addEventListener('click', this.onClickListener);
-            },
-            getElements: function () {
-                return document.querySelectorAll('.edit-btn');
-            },
-            onClickListener: function (e) {
-                if (e.target.className === 'edit') {
-                    let formData = new FormData();
-
-                    let tr = e.target.closest('div.card-container');
-
-                    formData.append('row_id', tr.getAttribute('data-id'));
-                    api(endpoints.get, formData, table.buttons.edit.success, table.buttons.edit.fail);
-                }
-            },
-            success: function (data) {
-                let person_data = data[0];
-                forms.update.show();
-                forms.update.fill(person_data);
-            },
-            fail: function (errors) {
-                alert(errors[0]);
-            }
+            const row = table.getElement().querySelector('tr[data-id="' + id + '"]');
+            row.remove();
         }
     }
 };
-
 /**
  * Core page functionality
  */
