@@ -27,15 +27,15 @@ $footer = new \App\Views\Footer();
 
 <main>
     <section class="wrapper">
-        <h1>Feedbacks:</h1>
+        <h1>Feedback:</h1>
         <div class="block">
-            <div id="feedbacks-table">
+            <div id="feedback-table">
                 <table>
                     <thead>
                     <tr>
-                        <th>Vardas</th>
                         <th>Komentaras</th>
                         <th>Data</th>
+                        <th>Vardas Pavarde</th>
 
                     </tr>
                     </thead>
@@ -45,13 +45,19 @@ $footer = new \App\Views\Footer();
                 </table>
             </div>
         </div>
-        <div class="block">
 
+        <?php if (App::$session->userLoggedIn()): ?>
+        <div class="block">
             <?php print $createForm->render(); ?>
         </div>
+
+       <?php else: ?>
+            <p>Norite parašytivali komentarą? <a href="register.php"><a>Užsiregistruokite</a></p>
+        <?php endif; ?>
     </section>
 
-    <!-- Update Modal -->
+    <!-- Updat
+    e Modal -->
     <div id="update-modal" class="modal">
         <div class="wrapper">
             <span class="close">&times;</span>
