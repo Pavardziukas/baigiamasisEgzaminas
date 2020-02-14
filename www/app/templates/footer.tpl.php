@@ -1,0 +1,1 @@
+<span>&copy; <?php print date('Y') ?>. Alius. Jokie duomenys nesaugomi</span>
